@@ -5,4 +5,4 @@ namespace inputs {
         InputsEngine() = default;
         ~InputsEngine() = default;
     };
-} // namespace ui
+} // namespace inputs
