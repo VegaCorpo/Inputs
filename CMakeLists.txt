@@ -11,6 +11,8 @@ set(CPM_USE_LOCAL_PACKAGES ON)
 
 include(cmake/CPM.cmake)
 CPMUsePackageLock(package-lock.cmake)
+CPMGetPackage(gainput)
+CPMGetPackage(glfw)
 
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release")
@@ -40,10 +42,11 @@ add_library(orbital_inputs SHARED
     src/InputsEngine.cpp
 )
 
-# target_link_libraries(orbital_inputs PRIVATE)
+target_link_libraries(orbital_inputs PRIVATE gainput glfw)
 
 target_include_directories(orbital_inputs PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
+    ${gainput_SOURCE_DIR}/lib/include
 )
 
 if(WIN32)
