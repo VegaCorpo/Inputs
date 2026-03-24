@@ -8,7 +8,7 @@ CPMDeclarePackage(gainput
 
 # GLFW
 CPMDeclarePackage(glfw
-        GIT_TAG 3.4
+        GIT_TAG 3.3.9
         GITHUB_REPOSITORY glfw/glfw
         SYSTEM NO
         EXCLUDE_FROM_ALL YES
