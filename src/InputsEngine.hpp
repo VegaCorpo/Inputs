@@ -2,7 +2,7 @@
 
 #include <unordered_map>
 #include <queue>
-#include "../../Common/types/types.hpp"
+#include "types/types.hpp"
 #define GLFW_DLL
 #include "GLFW/glfw3.h"
 

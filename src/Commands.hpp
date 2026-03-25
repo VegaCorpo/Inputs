@@ -2,7 +2,7 @@
 
 #include <unordered_map>
 #include "GLFW/glfw3.h"
-#include "../../Common/types/types.hpp"
+#include "types/types.hpp"
 
 namespace inputs {
     static const std::unordered_map<int, std::unordered_map<int, common::Action>> commands = {

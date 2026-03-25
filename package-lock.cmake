@@ -1,3 +1,11 @@
+# Common
+CPMDeclarePackage(Common
+    GITHUB_REPOSITORY VegaCorpo/Common
+    GIT_TAG main
+    SYSTEM YES
+    EXCLUDE_FROM_ALL YES
+)
+
 # Gainput
 CPMDeclarePackage(gainput
         GIT_TAG v1.0.0
