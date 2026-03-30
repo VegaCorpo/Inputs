@@ -6,18 +6,6 @@
 #define GLFW_DLL
 #include "GLFW/glfw3.h"
 
-namespace common {
-    class IInput {
-        public:
-            virtual ~IInput() = default;
-
-            virtual void init() = 0;
-
-            virtual void setKeyCallback() = 0;
-            virtual void updateActions() = 0;
-    };
-}
-
 namespace inputs {
     class InputsEngine : public common::IInput {
         public:
@@ -33,13 +21,13 @@ namespace inputs {
             // updateActions adds actions in queue.
             void updateActions() override;
         private:
-            // keyCallback handles key event.
-            static void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+            // _keyCallback handles key event.
+            static void _keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
-            // hasAction checks if action exists for a specific key event.
-            static bool hasAction(std::unordered_map<int, common::Action> listActions, int status);
+            // _hasAction checks if action exists for a specific key event.
+            static bool _hasAction(std::unordered_map<int, common::Action> listActions, int status);
 
-            GLFWwindow* glfwWin;
-            std::queue<common::Action> actions;
+            GLFWwindow* _glfwWin;
+            std::queue<common::Action> _actions;
     };
 } // namespace inputs
