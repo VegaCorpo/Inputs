@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.14)
 
 project(orbital_inputs)
 
+set(CMAKE_POLICY_VERSION_MINIMUM 3.10)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
 set(CMAKE_CXX_STANDARD 20 CACHE STRING "C++ standard")
@@ -38,12 +39,23 @@ endif()
 
 add_library(orbital_inputs SHARED
     src/InputsEngine.cpp
+    src/InputsExtern.cpp
 )
 
 # target_link_libraries(orbital_inputs PRIVATE)
 
+CPMAddPackage(NAME gainput)
+CPMAddPackage(NAME glfw)
+
+target_link_libraries(orbital_inputs PRIVATE
+    gainputstatic
+    glfw
+)
+
 target_include_directories(orbital_inputs PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Common
+    ${gainput_SOURCE_DIR}/lib/include
 )
 
 if(WIN32)
