@@ -5,8 +5,10 @@
 // #include "types/types.hpp"
 
 #include "../../Common/interfaces/IInputEngine.hpp"
+#include "types/types.hpp"
 #include <gainput/gainput.h>
 #include <GLFW/glfw3.h>
+#include "./Commands.hpp"
 
 namespace inputs {
     class InputsEngine : public common::IInputEngine {
@@ -23,7 +25,7 @@ namespace inputs {
             // void setKeyCallback() override;
 
             // // updateActions adds actions in queue.
-            // void updateActions() override;
+            // void updateActions();
         private:
             gainput::InputManager _manager;
             gainput::InputDevice* _keyboard;
@@ -35,8 +37,36 @@ namespace inputs {
             // static bool _hasAction(std::unordered_map<int, common::Action> &listActions, int status);
 
             GLFWwindow* _glfwWin;
-            // std::queue<common::Action> _actions;
-    };
+            std::queue<common::Action> _actions;
 
-    
+        // static const std::unordered_map<int, std::unordered_map<int, common::Action>> _listActions = {
+        //     {GLFW_KEY_Z,
+        //     {
+        //         {GLFW_PRESS, common::Action::MOVE_CAMERA_FORWARD},
+        //         {GLFW_RELEASE, common::Action::MOVE_CAMERA_FORWARD},
+        //     }},
+        //     {GLFW_KEY_S,
+        //     {
+        //         {GLFW_PRESS, common::Action::MOVE_CAMERA_BACKWARD},
+        //         {GLFW_RELEASE, common::Action::MOVE_CAMERA_BACKWARD},
+        //     }},
+        //     {GLFW_KEY_Q,
+        //     {
+        //         {GLFW_PRESS, common::Action::MOVE_CAMERA_LEFT},
+        //         {GLFW_RELEASE, common::Action::MOVE_CAMERA_LEFT},
+        //     }},
+        //     {GLFW_KEY_D,
+        //     {
+        //         {GLFW_PRESS, common::Action::MOVE_CAMERA_RIGHT},
+        //         {GLFW_RELEASE, common::Action::MOVE_CAMERA_RIGHT},
+        //     }}
+        // };
+
+        static const std::unordered_map<gainput::Key, common::Action> _listActions;
+
+        static const std::unordered_map<common::Action, std::shared_ptr<inputs::ICommand>> _commands;
+
+        std::vector<gainput::Key> _keysHandler = {gainput::KeyA, gainput::KeyQ, gainput::KeyD, gainput::KeyS, gainput::KeyW};
+
+    };  
 } // namespace inputs

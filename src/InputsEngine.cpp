@@ -1,23 +1,14 @@
 #include "InputsEngine.hpp"
 #include <iostream>
+#include <unordered_map>
 // #include "Commands.hpp"
 
 inputs::InputsEngine::InputsEngine()
 {
-    // this->_glfwWin = nullptr;
-    // this->_actions = {};
-
     gainput::DeviceId keyboardId = this->_manager.CreateDevice<gainput::InputDeviceKeyboard>(
         gainput::InputDevice::AutoIndex, gainput::InputDevice::DV_RAW);
     this->_keyboard = this->_manager.GetDevice(keyboardId);
 }
-
-// static std::unordered_map<int, int> actionsTemp = {};
-
-// void inputs::InputsEngine::_keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
-// {
-//     actionsTemp[key] = action;
-// }
 
 void inputs::InputsEngine::init()
 {
@@ -33,29 +24,19 @@ void inputs::InputsEngine::update()
     // std::cout << "Update appelé" << std::endl;
     this->_manager.Update();
 
-    if (this->_keyboard->GetBool(gainput::KeyA))
-    {
-        std::cout << "A click !" << std::endl;
-    }
-
-    if (this->_keyboard->GetBool(gainput::KeyQ))
-    {
-        std::cout << "Q click !" << std::endl;
-    }
-
-    if (this->_keyboard->GetBool(gainput::KeyS))
-    {
-        std::cout << "S click !" << std::endl;
-    }
-
-    if (this->_keyboard->GetBool(gainput::KeyZ))
-    {
-        std::cout << "Z click !" << std::endl;
-    }
-
-    if (this->_keyboard->GetBool(gainput::KeyD))
-    {
-        std::cout << "D click !" << std::endl;
+    for (auto key : this->_keysHandler) {
+        if (this->_keyboard->GetBool(key)) {
+            std::cout << "click !" << std::endl;
+            // Cette partie me cause une erreur je ne comprends pas pourquoi
+            auto action = this->_listActions.find(key);
+            if (action != this->_listActions.end()) {
+                auto command = this->_commands.find(action->second);
+                if (command != this->_commands.end()) {
+                    std::cout << "test";
+                    command->second->execute();
+                }
+            }
+        }
     }
     // std::cout << "Update finished" << std::endl;
 }
@@ -84,3 +65,18 @@ void inputs::InputsEngine::update()
 
 //     actionsTemp.clear();
 // }
+
+const std::unordered_map<common::Action, std::shared_ptr<inputs::ICommand>> inputs::InputsEngine::_commands = {
+            {common::Action::MOVE_CAMERA_FORWARD, std::make_shared<inputs::ACommand>("FORWARD")},
+            {common::Action::MOVE_CAMERA_LEFT, std::make_shared<inputs::ACommand>("LEFT")},
+            {common::Action::MOVE_CAMERA_RIGHT, std::make_shared<inputs::ACommand>("RIGHT")},
+            {common::Action::MOVE_CAMERA_BACKWARD, std::make_shared<inputs::ACommand>("BACKWARD")}
+};
+
+const std::unordered_map<gainput::Key, common::Action> inputs::InputsEngine::_listActions = {
+    {gainput::KeyA, common::Action::MOVE_CAMERA_FORWARD},
+    {gainput::KeyQ, common::Action::MOVE_CAMERA_LEFT},
+    {gainput::KeyW, common::Action::MOVE_CAMERA_FORWARD},
+    {gainput::KeyS, common::Action::MOVE_CAMERA_BACKWARD},
+    {gainput::KeyD, common::Action::MOVE_CAMERA_RIGHT}
+};
