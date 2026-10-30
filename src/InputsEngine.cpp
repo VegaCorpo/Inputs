@@ -12,7 +12,6 @@ inputs::InputsEngine::InputsEngine()
 
 void inputs::InputsEngine::init()
 {
-    this->_glfwWin = glfwGetCurrentContext();
     if (!this->_keyboard || !this->_keyboard->IsAvailable())
        std::cerr << "Keyboard gainput unavailable" << std::endl;
 }
@@ -24,21 +23,15 @@ void inputs::InputsEngine::update()
     for (auto key : this->_keysHandler) {
         if (this->_keyboard->GetBool(key)) {
             auto action = this->_listActions.find(key);
-            if (action != this->_listActions.end()) {
-                auto command = this->_commands.find(action->second);
-                if (command != this->_commands.end())
-                    command->second->execute();
-            }
+            if (action != this->_listActions.end())
+                this->_actions.push(action->second);
         }
     }
 }
 
-const std::unordered_map<common::Action, std::shared_ptr<inputs::ICommand>> inputs::InputsEngine::_commands = {
-            {common::Action::MOVE_CAMERA_FORWARD, std::make_shared<inputs::ACommand>("FORWARD")},
-            {common::Action::MOVE_CAMERA_LEFT, std::make_shared<inputs::ACommand>("LEFT")},
-            {common::Action::MOVE_CAMERA_RIGHT, std::make_shared<inputs::ACommand>("RIGHT")},
-            {common::Action::MOVE_CAMERA_BACKWARD, std::make_shared<inputs::ACommand>("BACKWARD")}
-};
+std::queue<common::Action> inputs::InputsEngine::getActions() {
+    return std::exchange(this->_actions, std::queue<common::Action>{});
+}
 
 const std::unordered_map<gainput::Key, common::Action> inputs::InputsEngine::_listActions = {
     {gainput::KeyA, common::Action::MOVE_CAMERA_FORWARD},

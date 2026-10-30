@@ -26,13 +26,14 @@ namespace inputs {
 
             void update() override;
 
+            std::queue<common::Action> getActions() override;
+
         private:
             static void _keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
             gainput::InputManager _manager;
             gainput::InputDevice* _keyboard;
 
-            GLFWwindow* _glfwWin;
             std::queue<common::Action> _actions;
 
         static const std::unordered_map<gainput::Key, common::Action> _listActions;
