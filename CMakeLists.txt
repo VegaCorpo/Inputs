@@ -4,13 +4,16 @@ project(orbital_inputs)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
-set(CMAKE_CXX_STANDARD 20 CACHE STRING "C++ standard")
+set(CMAKE_CXX_STANDARD 26 CACHE STRING "C++ standard")
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CPM_USE_LOCAL_PACKAGES ON)
 
 include(cmake/CPM.cmake)
 CPMUsePackageLock(package-lock.cmake)
+
+CPMGetPackage("Common")
+CPMGetPackage("glfw")
 
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release")
@@ -37,13 +40,15 @@ if (CMAKE_BUILD_TYPE STREQUAL "Asan")
 endif()
 
 add_library(orbital_inputs SHARED
+    src/InputsExtern.cpp
     src/InputsEngine.cpp
+    src/keyboard/KeyboardState.cpp
 )
 
-# target_link_libraries(orbital_inputs PRIVATE)
+target_link_libraries(orbital_inputs PRIVATE Common glfw)
 
 target_include_directories(orbital_inputs PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
 if(WIN32)
