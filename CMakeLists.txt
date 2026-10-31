@@ -47,6 +47,8 @@ add_library(orbital_inputs SHARED
 
 target_link_libraries(orbital_inputs PRIVATE Common glfw)
 
+target_compile_definitions(orbital_inputs PRIVATE GLFW_INCLUDE_NONE)
+
 target_include_directories(orbital_inputs PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
