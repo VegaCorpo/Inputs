@@ -43,6 +43,7 @@ add_library(orbital_inputs SHARED
     src/InputsExtern.cpp
     src/InputsEngine.cpp
     src/keyboard/KeyboardState.cpp
+    src/mouse/MouseState.cpp
 )
 
 target_link_libraries(orbital_inputs PRIVATE Common glfw)
