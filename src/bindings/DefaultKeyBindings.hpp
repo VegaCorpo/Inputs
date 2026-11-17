@@ -27,5 +27,8 @@ namespace inputs {
         {GLFW_KEY_RIGHT, onPress, common::Action::ROTATE_CAMERA_RIGHT},
         {GLFW_KEY_RIGHT, onRelease, common::Action::ROTATE_CAMERA_LEFT},
         {GLFW_KEY_H, onRelease, common::Action::CHANGE_RESCALE_MODE},
+        {GLFW_KEY_T, onRelease, common::Action::TOGGLE_TRAILS},
+        {GLFW_KEY_L, onRelease, common::Action::TOGGLE_LABELS},
+        {GLFW_KEY_I, onRelease, common::Action::TOGGLE_ICONS},
     });
 } // namespace inputs

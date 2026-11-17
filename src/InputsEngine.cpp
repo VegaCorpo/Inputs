@@ -9,15 +9,18 @@ bool inputs::InputsEngine::init(void* windowHandle)
     if (windowHandle == nullptr)
         return false;
 
-    this->_keyboard.emplace(static_cast<GLFWwindow*>(windowHandle));
+    auto* window = static_cast<GLFWwindow*>(windowHandle);
+
+    this->_keyboard.emplace(window);
+    this->_mouse.emplace(window);
     return true;
 }
 
-std::queue<common::Action> inputs::InputsEngine::poll()
+std::queue<common::InputAction> inputs::InputsEngine::poll()
 {
-    std::queue<common::Action> actions;
+    std::queue<common::InputAction> actions;
 
-    if (!this->_keyboard)
+    if (!this->_keyboard || !this->_mouse)
         return actions;
 
     this->_keyboard->update();
@@ -25,7 +28,10 @@ std::queue<common::Action> inputs::InputsEngine::poll()
     const auto isTriggered = [this](const KeyBinding& binding) { return this->_isTriggered(binding); };
 
     for (const KeyBinding& binding : this->_bindings | std::views::filter(isTriggered))
-        actions.push(binding.action);
+        actions.push({.action = binding.action});
+
+    if (const auto mouseAction = this->_mouse->update())
+        actions.push(*mouseAction);
     return actions;
 }
 
